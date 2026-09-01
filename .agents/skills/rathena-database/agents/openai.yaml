@@ -1,0 +1,4 @@
+interface:
+  display_name: "rAthena Database"
+  short_description: "Handle YAML and MariaDB work with safeguards"
+  default_prompt: "Use $rathena-database to review this database change and its rollback."

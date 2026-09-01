@@ -1,0 +1,4 @@
+interface:
+  display_name: "rAthena Server Config"
+  short_description: "Review and change supported server configuration"
+  default_prompt: "Use $rathena-server-config to make this configuration change safely."

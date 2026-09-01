@@ -1,0 +1,4 @@
+interface:
+  display_name: "rAthena Testing"
+  short_description: "Run and report server regression validation"
+  default_prompt: "Use $rathena-testing to validate this change and report only executed tests."

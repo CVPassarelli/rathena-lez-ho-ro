@@ -1,0 +1,4 @@
+interface:
+  display_name: "rAthena Progression Balance"
+  short_description: "Analyze jobs, progression, combat, and balance"
+  default_prompt: "Use $rathena-progression-balance to analyze this progression or balance change."

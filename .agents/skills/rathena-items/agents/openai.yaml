@@ -1,0 +1,4 @@
+interface:
+  display_name: "rAthena Items"
+  short_description: "Build items, equipment, and cards safely"
+  default_prompt: "Use $rathena-items to implement this item and identify all client dependencies."

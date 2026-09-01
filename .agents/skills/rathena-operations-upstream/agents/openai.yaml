@@ -1,0 +1,4 @@
+interface:
+  display_name: "rAthena Operations Upstream"
+  short_description: "Operate and update while preserving custom work"
+  default_prompt: "Use $rathena-operations-upstream to plan this safe operation or upstream update."

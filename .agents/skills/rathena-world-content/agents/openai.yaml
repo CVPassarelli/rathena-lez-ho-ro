@@ -1,0 +1,4 @@
+interface:
+  display_name: "rAthena World Content"
+  short_description: "Build monsters, MVPs, drops, and spawns"
+  default_prompt: "Use $rathena-world-content to implement this monster or spawn change safely."

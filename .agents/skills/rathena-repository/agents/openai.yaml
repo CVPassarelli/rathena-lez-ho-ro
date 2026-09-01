@@ -1,0 +1,4 @@
+interface:
+  display_name: "Rathena Repository"
+  short_description: "Investigate this rAthena checkout safely"
+  default_prompt: "Use $rathena-repository to investigate this repository request with local evidence."

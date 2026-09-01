@@ -1,0 +1,4 @@
+interface:
+  display_name: "rAthena Script Content"
+  short_description: "Build quests, NPCs, instances, and events"
+  default_prompt: "Use $rathena-script-content to implement this scripted content with safe state handling."

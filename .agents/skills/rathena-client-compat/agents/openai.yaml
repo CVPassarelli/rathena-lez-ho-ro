@@ -1,0 +1,4 @@
+interface:
+  display_name: "rAthena Client Compatibility"
+  short_description: "Map PACKETVER and client asset dependencies"
+  default_prompt: "Use $rathena-client-compat to classify and verify this feature's client requirements."
