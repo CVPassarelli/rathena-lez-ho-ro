@@ -26,3 +26,7 @@ Credentials or sensitive endpoints can appear in overrides derived from `conf/im
 3. Track sanitized templates/custom sources elsewhere and provision ignored runtime imports: best secret separation and fewest upstream conflicts, but requires a deterministic provisioning workflow.
 
 Lowest-conflict proposal: option 3 for configuration/secrets; evaluate option 1 for deterministic custom YAML that must be shared. Avoid routine `git add -f`. Validate loader behavior, provisioning, secret scanning, and upstream ignore/template changes before deciding. Gate 2 does not modify `.gitignore`.
+
+## Gate 4A confirmed local pattern
+
+`TESTADO`: tracked scripts seed `conf/import-tmpl/` into the named `runtime_conf` volume and then inject local-only values from ignored `.cache/gate4a-secrets/`. No checkout file under `conf/import/` or `db/import/` and no `.gitignore` rule changed. This confirms option 3 for local operational configuration; the policy for future versioned custom YAML remains `BLOQUEADO` pending a separate decision.

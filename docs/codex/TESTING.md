@@ -11,3 +11,7 @@ For every run record: revision/branch, OS/toolchain, database/client identity, c
 Positive tests prove the intended path; negative tests reject invalid state/input; boundary tests cover maxima/minima/time; regression tests cover loaders and adjacent systems. For persistent rewards include interruption, relog, restart, concurrency, and duplicate invocation. For rates use statistically meaningful sampling and disclose method. A blocked environment is `BLOQUEADO`, never `TESTADO`. Client-visible work cannot pass without the exact compatible client.
 
 Gate 3 tools/commands are in `GATE3_VALIDATION.md`; reusable manual cases are in `MANUAL_TEST_RUNBOOKS.md`. Static rules are `TESTADO` only when their fixtures execute. The rAthena parser remains authoritative through built `map-server --run-once`; build/runtime stays `NOT RUN` until Gate 4.
+
+## Gate 4A runtime checks
+
+Build/runtime commands and evidence are in `GATE4A_RUNTIME.md`. `scripts/local-runtime.ps1 smoke` requires static validation, healthy DB/Login/Char/Map containers, the schema check, local ports, and no selected critical log pattern; it returns nonzero on failure. The `official` action additionally fails on rAthena `[Error]` output even where the upstream executable exits 0. Client and gameplay behavior remain `NOT RUN`.

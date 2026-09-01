@@ -1,0 +1,112 @@
+name: rathena-gate4a
+
+x-server: &server
+  image: rathena-gate4a:local
+  working_dir: /work
+  init: true
+  restart: "no"
+  volumes:
+    - work:/work
+    - runtime_conf:/work/conf/import
+    - ../../:/source:ro
+
+services:
+  db:
+    image: mariadb:11.4
+    restart: "no"
+    environment:
+      MARIADB_DATABASE: rathena_gate4a
+      MARIADB_USER: rathena_gate4a
+      MARIADB_PASSWORD_FILE: /run/secrets/db_password
+      MARIADB_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+    secrets: [db_password, db_root_password]
+    volumes:
+      - database:/var/lib/mysql
+      - ../../:/source:ro
+      - ./init-db.sh:/docker-entrypoint-initdb.d/10-rathena-schema.sh:ro
+      - ./query-schema.sh:/opt/query-schema.sh:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+
+  builder:
+    image: rathena-gate4a:local
+    build:
+      context: ../docker
+      dockerfile: Dockerfile
+    working_dir: /work
+    environment:
+      BUILDER_CONFIGURE: --enable-packetver=20211103
+    volumes:
+      - ../../:/source:ro
+      - work:/work
+    command: ["/bin/bash", "/source/tools/local-runtime/build.sh"]
+
+  config-init:
+    image: mariadb:11.4
+    working_dir: /work
+    environment:
+      RATHENA_DB_NAME: rathena_gate4a
+      RATHENA_DB_USER: rathena_gate4a
+    secrets: [db_password, inter_server_password]
+    volumes:
+      - work:/work
+      - runtime_conf:/work/conf/import
+      - ./write-config.sh:/opt/write-config.sh:ro
+    command: ["/bin/sh", "/opt/write-config.sh"]
+    depends_on:
+      db:
+        condition: service_healthy
+
+  login:
+    <<: *server
+    command: ["/work/login-server"]
+    ports: ["127.0.0.1:6900:6900"]
+    depends_on:
+      db: {condition: service_healthy}
+      config-init: {condition: service_completed_successfully}
+    healthcheck:
+      test: ["CMD-SHELL", "pidof login-server >/dev/null && nc -z 127.0.0.1 6900"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  char:
+    <<: *server
+    command: ["/work/char-server"]
+    ports: ["127.0.0.1:6121:6121"]
+    depends_on:
+      login: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD-SHELL", "pidof char-server >/dev/null && nc -z 127.0.0.1 6121"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  map:
+    <<: *server
+    command: ["/work/map-server"]
+    ports: ["127.0.0.1:5121:5121"]
+    depends_on:
+      char: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD-SHELL", "pidof map-server >/dev/null && nc -z 127.0.0.1 5121"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+
+secrets:
+  db_password:
+    file: ${RATHENA_SECRET_DIR:?Set RATHENA_SECRET_DIR}/db_password
+  db_root_password:
+    file: ${RATHENA_SECRET_DIR:?Set RATHENA_SECRET_DIR}/db_root_password
+  inter_server_password:
+    file: ${RATHENA_SECRET_DIR:?Set RATHENA_SECRET_DIR}/inter_server_password
+
+volumes:
+  database:
+  work:
+  runtime_conf:

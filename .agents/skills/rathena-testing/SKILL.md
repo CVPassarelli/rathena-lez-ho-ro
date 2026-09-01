@@ -17,4 +17,4 @@ Trigger on test planning/execution, build/startup validation, regression or a re
 
 Order checks: static/schema/references; build; isolated DB; login→char→map integration; positive; negative/boundary; persistence/restart/concurrency/exploit; adjacent regression; exact client. Record expected/actual/logs for every case. Do not infer success from exit code alone or relabel blocked/unrun work as tested. Deliver a case table, commands/environment, results/failures, artifacts, untested/client blockers, risks and cleanup/rollback.
 
-For custom static checks, read `docs/codex/GATE3_VALIDATION.md` and reuse repository scripts. Extend a rule only with isolated fixtures/self-tests. Treat `map-server --run-once`, MariaDB, servers, and client rows as `NOT RUN` until real execution.
+For custom static checks, read `docs/codex/GATE3_VALIDATION.md` and reuse repository scripts. Extend a rule only with isolated fixtures/self-tests. For the tested local Docker runtime, also read `docs/codex/GATE4A_RUNTIME.md`; do not generalize that evidence to another revision/environment. Client rows remain `NOT RUN` until exact-client execution.

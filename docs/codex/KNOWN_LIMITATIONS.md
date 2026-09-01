@@ -13,3 +13,11 @@
 Resolve each limitation in a later authorized gate with recorded commands, environment, logs, and results.
 
 Gate 3 static validation does not implement a full rAthena script parser, prove semantic item scripts or balance, load databases, start servers, or verify a client. Those require official built tools/`map-server --run-once`, Gate 4 runtime, or the exact client. PyYAML is a pinned isolated validator dependency, not an rAthena dependency.
+
+## Gate 4A update
+
+- Docker build, MariaDB, baseline server chain, Renewal loading, shutdown/restart, and persistence are `TESTADO` only for `GATE4A_RUNTIME.md`; native Windows and production remain `NÃO TESTADO`.
+- Runtime rates are not gameplay-sampled, and all exact-client cases remain `NOT RUN`.
+- The CI-derived all-custom-NPC check is `BLOQUEADO`: `npc/custom/events/disguise.txt` has a parser error and `npc/custom/card_seller.txt` expects SQL mirror tables not present in the YAML baseline.
+- The official Alpine image runs servers as root; PCRE and shared-object/plugin support were not built.
+- OneDrive did not block the read-only source copy, but the initial copy was slow; other hosts/sync states are unproven.

@@ -13,6 +13,6 @@ Deliver target/revision, statements/files, backup/rollback, commands/results, fa
 
 ## Required sequence
 
-Trigger on YAML records/imports, SQL schema/data, migrations or MariaDB diagnosis. Read all named documents through `docs/codex/`, plus `IMPORTS_POLICY.md`. Inspect in order: Git/environment target; active/shared YAML or SQL schema; header/version; loader/import or upgrade history; real example; IDs/references; credentials boundary; backup/rollback.
+Trigger on YAML records/imports, SQL schema/data, migrations or MariaDB diagnosis. Read all named documents through `docs/codex/`, plus `IMPORTS_POLICY.md`; for the local Docker database also read `GATE4A_RUNTIME.md`. Inspect in order: Git/environment target; active/shared YAML or SQL schema; header/version; loader/import or upgrade history; real example; IDs/references; credentials boundary; backup/rollback.
 
 For authorized implementation, keep YAML in an approved custom source/import; make SQL transactional/reversible where supported. Positive tests load/write/read expected data; negative tests reject duplicate/invalid references and schema mismatch; regression tests startup, persistence, neighboring queries and rollback. Never print secrets or call a migration tested without executing it. Delivery includes exact target, evidence, files/statements, backup/rollback, cases/results and unresolved risk.

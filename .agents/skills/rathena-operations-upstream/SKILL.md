@@ -13,6 +13,6 @@ Deliver revision/range, files/conflicts, commands/results, security findings, un
 
 ## Required sequence
 
-Trigger on startup/shutdown, security, rollback, import governance, upstream fetch/integration or operational readiness. Read all named files using `docs/codex/` paths plus `IMPORTS_POLICY.md`. Inspect Git/remotes/user changes, exact target, real command/script, credentials, backups, custom/import inventory, upstream range, schema/packet/client changes, then rollback.
+Trigger on startup/shutdown, security, rollback, import governance, upstream fetch/integration or operational readiness. Read all named files using `docs/codex/` paths plus `IMPORTS_POLICY.md`; for the local Docker environment also read `GATE4A_RUNTIME.md`. Inspect Git/remotes/user changes, exact target, real command/script, credentials, backups, custom/import inventory, upstream range, schema/packet/client changes, then rollback.
 
 Mutate only with explicit authority. Positive checks prove expected process/health/update; negative checks cover missing dependency/config and safe failure; regression covers build, isolated schema, all servers, functional behavior, IDs and exact client. Never discard conflicts, auto-migrate/deploy or call unrun health checks successful. Deliver revisions/range, commands, conflicts/files, security findings, results/failures, untested/client blockers, risks and rollback.
