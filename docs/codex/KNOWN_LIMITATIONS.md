@@ -8,5 +8,6 @@
 - No safe custom ID ranges are confirmed.
 - Configured, Git-ignored custom targets `conf/import/` and `db/import/` are absent; no active custom override in them was inspected.
 - No custom content, DB migration, deployment, or operational change is part of Gate 2.
+- The final tracking/provisioning policy for ignored imports is `BLOQUEADO` until the pre-Gate-4 decision in `IMPORTS_POLICY.md`.
 
 Resolve each limitation in a later authorized gate with recorded commands, environment, logs, and results.

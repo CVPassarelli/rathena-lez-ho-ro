@@ -23,10 +23,22 @@ YAML headers/comments are the schema authority for this checkout. Official recor
 6. Record the reservation below before implementation.
 7. Record every server/client file and dependency, then rerun collision checks.
 
+## Operational lifecycle
+
+1. **Request:** define entity type, internal/display names, purpose, owner/context and client visibility.
+2. **Search:** use exact-token repository-wide searches for numeric ID and symbolic name; inspect shared, `db/re/`, `db/pre-re/`, scripts, source enums/constants, SQL columns, ignored imports if present, and the exact client.
+3. **Prove availability:** attach searches and inspected database bounds. An empty search is necessary but not sufficient; require an approved range policy or authoritative upstream/client evidence.
+4. **Reserve:** add a `RESERVED` row before implementation, with date, dependencies and intended files. Two concurrent tasks may not share a reservation.
+5. **Implement:** use the recorded ID consistently in supported import/custom files and client resources; do not expand scope silently.
+6. **Validate:** repeat numeric/symbolic collision searches, parse/load, cross-reference, functional/regression and exact-client tests. Move to `ACTIVE` only when required sides pass; otherwise use `DEPENDE DO CLIENT` or `BLOQUEADO`.
+7. **Abandon/release:** remove unshipped implementation files, mark the row `RETIRED` (never delete history), record reason/date and verify no persisted/server/client references. Reuse requires a new explicit review; shipped or persisted IDs should normally remain permanently retired.
+
+Useful patterns: `rg -n "(^|[^0-9])<ID>([^0-9]|$)" .` and `rg -n "<AegisName>|<script-name>" .`; adjust quoting for PowerShell and inspect results manually. `db/readme.md` is the checkout import reference. No numeric range is approved: allocation remains `BLOQUEADO`, not guessed from gaps.
+
 ## Registry
 
-| Status | Entity | ID/name | Purpose | Server files | Client files | Evidence/owner |
-|---|---|---|---|---|---|---|
-| PENDING POLICY | All | No range assigned | Await confirmed safe allocation policy | — | — | Gate 2 |
+| Type | ID | Internal name | Display name | Status | Owner/context | Server files | Client files | Dependencies | Date | Notes |
+|---|---:|---|---|---|---|---|---|---|---|---|
+| POLICY | — | — | — | BLOQUEADO | Gate 2 | `docs/codex/ID_REGISTRY.md` | Exact client unknown | Approved range evidence | 2026-09-01 | No safe custom range confirmed |
 
 Never delete history: mark retired IDs and keep their former relationships to prevent reuse collisions.

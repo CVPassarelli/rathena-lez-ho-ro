@@ -9,3 +9,7 @@
 7. Update knowledge docs with confirmed facts only.
 
 Stop for a decision when an ID range is unconfirmed, client assets/executable are missing, core C++ or official-file edits appear necessary, database mutation/deploy is required, requirements conflict, or rollback cannot be made safe.
+
+Repository evidence: YAML footer imports are parsed by `YamlDatabase::parseImports` in `src/common/database.cpp`; both mode script loaders import `npc/scripts_custom.conf`; import conventions are documented in `conf/readme.md` and `db/readme.md`. Because ignored runtime imports may not be shareable, apply `IMPORTS_POLICY.md` before choosing a path.
+
+Every content proposal must include a requirement/state model, ID reservation, server/client file matrix, real nearby example, loader trace, economy/security risks, positive/negative/boundary/regression tests, and recoverable rollback. Useful searches start with `rg -n "candidate_id|internal_name" db npc src conf` and narrow only after repository-wide collision checks. Runtime success remains `NÃO TESTADO` until executed.

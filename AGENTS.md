@@ -1,11 +1,11 @@
 # rAthena server workspace
 
-This repository is an rAthena server currently confirmed as Renewal, with EXP and drops at 1x and `PACKETVER 20211103`. The future target is documented in `docs/codex/CURRENT_BASELINE.md`; it is not authorization to implement it.
+This checkout is currently `CONFIRMADO NO CÓDIGO` as Renewal, with configured EXP/drop multipliers at 1x and default `PACKETVER 20211103`. The future Classic 99/70 target in [`docs/codex/CURRENT_BASELINE.md`](docs/codex/CURRENT_BASELINE.md) is not current state or authorization to implement it.
 
-Before answering or changing anything, inspect the current repository and Git state, load the matching skill from `.agents/skills/`, and use `docs/codex/README.md` as the documentation router. Prefer `conf/import/`, `db/import/`, `npc/custom/`, and other supported overrides; preserve upstream files. Do not edit official files or core C++ when an import, override, configuration, or script solves the requirement. Keep diffs small and tied to the request.
+Before answering or editing, inspect Git and the relevant loaders, schemas, examples, and source. Start at [`docs/codex/README.md`](docs/codex/README.md), then load the matching skill from `.agents/skills/`: repository investigation; server configuration; scripts/quests/NPCs/instances; monsters/drops/spawns; items; progression/combat/balance; database; testing; client compatibility; or operations/upstream.
 
-Register every new ID through `docs/codex/ID_REGISTRY.md`; never invent IDs, commands, APIs, properties, or formats. Apply `docs/codex/TESTING.md` and `CHANGE_CHECKLIST.md`, report only tests actually run, never hide failures, and distinguish server-only work from client dependencies using `CLIENT_BOUNDARIES.md`.
+Preserve upstream. Prefer supported imports and `npc/custom`; do not edit official files or core C++ when configuration/import/script solves the requirement. Follow [`CUSTOM_CONTENT_RULES.md`](docs/codex/CUSTOM_CONTENT_RULES.md), reserve IDs through [`ID_REGISTRY.md`](docs/codex/ID_REGISTRY.md), and classify client work with [`CLIENT_BOUNDARIES.md`](docs/codex/CLIENT_BOUNDARIES.md). Never invent commands, APIs, IDs, properties, formats, or runtime behavior.
 
-Never change `PACKETVER` without analysis and approval; never claim a feature complete while required client work is missing. Do not version secrets, run destructive database actions, deploy automatically, enable Third/Fourth Jobs, or overwrite user work. Treat production data and credentials as out of scope unless explicitly authorized.
+Use [`TESTING.md`](docs/codex/TESTING.md) and [`CHANGE_CHECKLIST.md`](docs/codex/CHANGE_CHECKLIST.md). Never claim unexecuted tests, hide failures, or call a feature complete while required client work is missing. Keep diffs small and requirement-specific.
 
-Every delivery must list changed files, evidence, validation performed/results, untested or client-dependent items, risks, and rollback instructions.
+Never change `PACKETVER` without analysis and approval; enable Third/Fourth Jobs; version secrets; run destructive database actions; deploy automatically; modify AWS; or overwrite user work. Every delivery lists files, evidence labels, validation/results, failures, untested/client-dependent items, risks, and rollback.
