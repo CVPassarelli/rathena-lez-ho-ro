@@ -1,0 +1,11 @@
+Version: 1
+Files:
+  - Path: content/item.yml
+    Kind: Item
+    LoadedBy: fixture:client-undeclared
+Registry:
+  - Type: Item
+    Id: 990005
+    InternalName: FIXTURE_CLIENT_ITEM
+    ServerFiles: [content/item.yml]
+ClientDependencies: []

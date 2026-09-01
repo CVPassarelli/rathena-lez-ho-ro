@@ -1,0 +1,4 @@
+Header: {Type: ITEM_DB, Version: 3}
+Body:
+  - {Id: 990002, AegisName: FIXTURE_DUPLICATE_A, Name: A, Type: Etc}
+  - {Id: 990002, AegisName: FIXTURE_DUPLICATE_B, Name: B, Type: Etc}

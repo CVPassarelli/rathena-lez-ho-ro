@@ -1,0 +1,3 @@
+Header: {Type: ITEM_DB, Version: 3}
+Body:
+  - {Id: 990004, AegisName: FIXTURE_REGISTRY_ITEM, Name: Registry Fixture, Type: Etc}

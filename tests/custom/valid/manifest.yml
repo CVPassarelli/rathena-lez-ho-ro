@@ -1,0 +1,14 @@
+Version: 1
+Files:
+  - Path: content/item.yml
+    Kind: Item
+    LoadedBy: fixture:valid
+Registry:
+  - Type: Item
+    Id: 990001
+    InternalName: FIXTURE_VALID_ITEM
+    ServerFiles: [content/item.yml]
+ClientDependencies:
+  - Type: Item
+    Id: 990001
+    Status: FixtureOnly

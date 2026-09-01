@@ -1,0 +1,9 @@
+Header:
+  Type: ITEM_DB
+  Version: 3
+Body:
+  - Id: 990001
+    AegisName: FIXTURE_VALID_ITEM
+    Name: Fixture Valid Item
+    Type: Etc
+    Weight: 0

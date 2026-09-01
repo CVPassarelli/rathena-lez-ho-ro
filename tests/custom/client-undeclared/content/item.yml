@@ -1,0 +1,3 @@
+Header: {Type: ITEM_DB, Version: 3}
+Body:
+  - {Id: 990005, AegisName: FIXTURE_CLIENT_ITEM, Name: Client Fixture, Type: Etc}

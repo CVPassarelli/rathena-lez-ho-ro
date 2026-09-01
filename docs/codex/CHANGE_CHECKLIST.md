@@ -14,11 +14,14 @@ For every line use one label: `CONFIRMADO NO CÓDIGO`, `CONFIRMADO POR DOCUMENTA
 
 - [ ] No secrets, unsafe SQL, privilege expansion, duplicate rewards or untrusted-input issue.
 - [ ] YAML/script/config syntax and all IDs/maps/items/mobs/skills verified.
+- [ ] Static validator and self-tests pass; manifest, registry, loaders and client declarations are current.
+- [ ] Invalid fixtures remain under `tests/custom/` and absent from runtime loaders.
 - [ ] Build command/result recorded.
 - [ ] login/char/map startup, integration and logs checked.
 - [ ] Positive, negative, boundary, persistence, reload/restart and exploit cases run.
 - [ ] Adjacent gameplay/economy regression checked.
 - [ ] Exact client executable/assets/tables verified or marked dependency.
+- [ ] Runtime/client smoke rows remain `NOT RUN` until actually executed.
 
 ## Documentation, delivery and rollback
 

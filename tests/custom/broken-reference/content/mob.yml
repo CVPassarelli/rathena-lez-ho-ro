@@ -1,0 +1,9 @@
+Header: {Type: MOB_DB, Version: 3}
+Body:
+  - Id: 990003
+    AegisName: FIXTURE_BROKEN_MOB
+    Name: Broken Reference
+    Level: 1
+    Hp: 1
+    Drops:
+      - {Item: FIXTURE_ITEM_DOES_NOT_EXIST, Rate: 100}

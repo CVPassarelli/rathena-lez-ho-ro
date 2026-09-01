@@ -16,3 +16,5 @@ Deliver each command/case and result using required evidence labels, failures, o
 Trigger on test planning/execution, build/startup validation, regression or a readiness claim. Read named files under `docs/codex/` and domain docs. Inspect revision/worktree, actual build/CI scripts, environment/toolchain, database target, server configs, feature diff, client requirements, and cleanup.
 
 Order checks: static/schema/references; build; isolated DB; login→char→map integration; positive; negative/boundary; persistence/restart/concurrency/exploit; adjacent regression; exact client. Record expected/actual/logs for every case. Do not infer success from exit code alone or relabel blocked/unrun work as tested. Deliver a case table, commands/environment, results/failures, artifacts, untested/client blockers, risks and cleanup/rollback.
+
+For custom static checks, read `docs/codex/GATE3_VALIDATION.md` and reuse repository scripts. Extend a rule only with isolated fixtures/self-tests. Treat `map-server --run-once`, MariaDB, servers, and client rows as `NOT RUN` until real execution.

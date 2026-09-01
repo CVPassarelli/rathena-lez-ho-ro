@@ -1,0 +1,14 @@
+Version: 1
+Files:
+  - Path: content/item.yml
+    Kind: Item
+    LoadedBy: fixture:duplicate-id
+Registry:
+  - Type: Item
+    Id: 990002
+    InternalName: FIXTURE_DUPLICATE_A
+    ServerFiles: [content/item.yml]
+ClientDependencies:
+  - Type: Item
+    Id: 990002
+    Status: FixtureOnly

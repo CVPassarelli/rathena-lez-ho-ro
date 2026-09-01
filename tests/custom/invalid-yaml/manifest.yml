@@ -1,0 +1,7 @@
+Version: 1
+Files:
+  - Path: content/item.yml
+    Kind: Item
+    LoadedBy: fixture:invalid-yaml
+Registry: []
+ClientDependencies: []

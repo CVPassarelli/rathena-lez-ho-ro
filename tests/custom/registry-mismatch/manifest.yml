@@ -1,0 +1,14 @@
+Version: 1
+Files:
+  - Path: content/item.yml
+    Kind: Item
+    LoadedBy: fixture:registry-mismatch
+Registry:
+  - Type: Item
+    Id: 990004
+    InternalName: WRONG_INTERNAL_NAME
+    ServerFiles: [content/item.yml]
+ClientDependencies:
+  - Type: Item
+    Id: 990004
+    Status: FixtureOnly

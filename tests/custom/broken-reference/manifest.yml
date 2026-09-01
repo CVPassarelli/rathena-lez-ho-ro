@@ -1,0 +1,14 @@
+Version: 1
+Files:
+  - Path: content/mob.yml
+    Kind: Mob
+    LoadedBy: fixture:broken-reference
+Registry:
+  - Type: Mob
+    Id: 990003
+    InternalName: FIXTURE_BROKEN_MOB
+    ServerFiles: [content/mob.yml]
+ClientDependencies:
+  - Type: Mob
+    Id: 990003
+    Status: FixtureOnly

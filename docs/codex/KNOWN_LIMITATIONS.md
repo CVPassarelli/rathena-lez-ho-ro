@@ -11,3 +11,5 @@
 - The final tracking/provisioning policy for ignored imports is `BLOQUEADO` until the pre-Gate-4 decision in `IMPORTS_POLICY.md`.
 
 Resolve each limitation in a later authorized gate with recorded commands, environment, logs, and results.
+
+Gate 3 static validation does not implement a full rAthena script parser, prove semantic item scripts or balance, load databases, start servers, or verify a client. Those require official built tools/`map-server --run-once`, Gate 4 runtime, or the exact client. PyYAML is a pinned isolated validator dependency, not an rAthena dependency.

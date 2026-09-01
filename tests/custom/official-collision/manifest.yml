@@ -1,0 +1,14 @@
+Version: 1
+Files:
+  - Path: content/item.yml
+    Kind: Item
+    LoadedBy: fixture:official-collision
+Registry:
+  - Type: Item
+    Id: 1101
+    InternalName: FIXTURE_COLLISION
+    ServerFiles: [content/item.yml]
+ClientDependencies:
+  - Type: Item
+    Id: 1101
+    Status: FixtureOnly
