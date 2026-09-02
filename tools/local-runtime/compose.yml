@@ -61,6 +61,19 @@ services:
       db:
         condition: service_healthy
 
+  db-provision:
+    image: mariadb:11.4
+    environment:
+      RATHENA_DB_NAME: rathena_gate4a
+      RATHENA_DB_USER: rathena_gate4a
+    secrets: [db_password, inter_server_password]
+    volumes:
+      - ./provision-inter-server.sh:/opt/provision-inter-server.sh:ro
+    command: ["/bin/sh", "/opt/provision-inter-server.sh"]
+    depends_on:
+      db:
+        condition: service_healthy
+
   login:
     <<: *server
     command: ["/work/login-server"]
@@ -68,6 +81,7 @@ services:
     depends_on:
       db: {condition: service_healthy}
       config-init: {condition: service_completed_successfully}
+      db-provision: {condition: service_completed_successfully}
     healthcheck:
       test: ["CMD-SHELL", "pidof login-server >/dev/null && nc -z 127.0.0.1 6900"]
       interval: 5s

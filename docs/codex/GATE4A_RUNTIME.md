@@ -8,7 +8,7 @@ Purpose: reproduce and audit the tested Renewal baseline on Windows PowerShell t
 
 `tools/local-runtime/compose.yml` reuses `tools/docker/Dockerfile`. Source is bind-mounted read-only and copied into the Linux `work` volume. Binaries and generated files therefore avoid OneDrive file locking, CRLF execution, accented/space path, and repeated bind-mount compilation; the initial copy can still be slow while OneDrive synchronizes.
 
-MariaDB uses the named `database` volume and has no host port. Login, Char, and Map expose only `127.0.0.1:6900`, `127.0.0.1:6121`, and `127.0.0.1:5121`. Secrets are generated under ignored `.cache/gate4a-secrets/`; the application uses the dedicated `rathena_gate4a` DB user, while root is limited to initialization and read-only smoke inspection. An independent 32-character inter-server secret replaces upstream `s1/p1` locally. Never print or commit these files.
+MariaDB uses the named `database` volume and has no host port. Login, Char, and Map expose only `127.0.0.1:6900`, `127.0.0.1:6121`, and `127.0.0.1:5121`. Secrets are generated under ignored `.cache/gate4a-secrets/`; the application uses the dedicated `rathena_gate4a` DB user, while root is limited to initialization and smoke inspection. An independent 23-character hexadecimal inter-server secret replaces upstream `s1/p1` locally. The limit follows `charserv_config.passwd[24]` in `src/char/char.hpp`, packet copies in `src/char/char_logif.cpp`, and `NAME_LENGTH` storage in `src/map/chrif.cpp`. Never print or commit these files.
 
 ## PowerShell workflow
 
@@ -23,7 +23,15 @@ MariaDB uses the named `database` volume and has no host port. Login, Char, and 
 .\scripts\local-runtime.ps1 start
 ```
 
-`setup` builds into a named volume and starts DB/config initialization. `start` waits for DB → Login → Char → Map healthchecks. `stop` retains containers and volumes. Never use `docker compose down -v`. `smoke` exits 0 only when static validation, four healthchecks, the schema check, local ports, and critical-log scan pass; client rows remain `NOT RUN`.
+`setup` is the only normal action that creates missing secrets. Other actions assert their presence and never regenerate them. `start` provisions configuration and the canonical SQL server account, then waits for DB → Login liveness → Char acceptance by Login → Map acceptance by Char. `stop` retains containers and volumes. Never use `docker compose down -v`.
+
+Compose healthchecks are liveness only: PID/local port for Login, Char and Map, plus MariaDB's probe. `smoke` is authoritative for readiness. It reads only the current container-start window, requires all inter-server success markers and Renewal/NPC loader completion, rejects confirmed refusal/password/connection/SQL/crash patterns, and returns 0 only for the complete chain. Client rows remain `NOT RUN`.
+
+## Gate 4A correction
+
+The original approval was invalidated. `TESTADO`: a generated 32-character secret was written unchanged to SQL while rAthena transmitted at most 23 characters, so Login refused Char. Fingerprints proved equality among the 32-character host/config/DB representations and inequality with the effective transmitted value. The SQL row identity was correct (`account_id=1`, `userid=s1`, `sex=S`, active and unexpired). Plaintext comparison is confirmed by `use_MD5_passwords: no` in `conf/login_athena.conf` and `login_check_password` in `src/login/login.cpp`.
+
+The correction separates secret initialization/assertion, configuration generation, and `tools/local-runtime/provision-inter-server.sh`. Provisioning validates exactly one canonical row and changes only its password. Explicit repair/rotation first backs up that row under ignored `.cache/gate4a-backups/`; restore is never automatic. A legacy SQL diagnostic had exposed the prior value, so the final 23-character value was explicitly rotated rather than reused, and the old one-shot container history was replaced.
 
 Linux/WSL can call the same entry point with `pwsh` when PowerShell 7 and Docker access exist; a duplicate Bash wrapper was not added. If OneDrive produces a reproducible mount/locking failure, stop and clone to a short local path rather than changing global Git settings.
 
@@ -31,7 +39,7 @@ Linux/WSL can call the same entry point with `pwsh` when PowerShell 7 and Docker
 
 For a new empty volume, `tools/local-runtime/init-db.sh` imports `sql-files/main.sql` then `sql-files/logs.sql`. MariaDB's entrypoint runs it only while `/var/lib/mysql` is uninitialized, so restart does not reimport or erase data. The result is 66 tables (`TESTADO`). This setup does not auto-apply `sql-files/upgrades/`; existing database upgrades require separate authorization. Item/mob SQL mirror tables are not part of normal YAML runtime and were not added after initialization because their official scripts may recreate tables.
 
-Persistence was tested by stopping all services, starting them with the same named volume, and observing the same 66-table count and healthy chain. MariaDB logged a normal shutdown and later startup without rerunning initialization.
+Persistence was revalidated after correction by stopping all services, starting with the same named volume, observing 66 tables before and after, unchanged secret fingerprints, and authoritative readiness pass. MariaDB initialization did not rerun.
 
 ## Runtime evidence and warnings
 

@@ -40,7 +40,5 @@ char_ip: char
 map_ip: 127.0.0.1
 EOF
 printf 'userid: s1\npasswd: %s\n' "$inter_password" >> /work/conf/import/map_conf.txt
-MYSQL_PWD="$password" mariadb -h db -u "$RATHENA_DB_USER" "$RATHENA_DB_NAME" \
-  -e "UPDATE login SET user_pass='${inter_password}' WHERE account_id=1 AND sex='S'"
 chmod 600 /work/conf/import/*
-unset password inter_password MYSQL_PWD
+unset password inter_password

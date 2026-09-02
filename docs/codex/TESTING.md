@@ -14,4 +14,6 @@ Gate 3 tools/commands are in `GATE3_VALIDATION.md`; reusable manual cases are in
 
 ## Gate 4A runtime checks
 
-Build/runtime commands and evidence are in `GATE4A_RUNTIME.md`. `scripts/local-runtime.ps1 smoke` requires static validation, healthy DB/Login/Char/Map containers, the schema check, local ports, and no selected critical log pattern; it returns nonzero on failure. The `official` action additionally fails on rAthena `[Error]` output even where the upstream executable exits 0. Client and gameplay behavior remain `NOT RUN`.
+Build/runtime commands and corrected evidence are in `GATE4A_RUNTIME.md`. Compose health means liveness, not integration. `scripts/local-runtime.ps1 smoke` evaluates the current container-start window through `tools/local-runtime/readiness.py`; it requires Login accepting Char, Char connected to Login and registering Map, Map connected/online, Renewal/NPC loaders, and no active refusal/password/connection/SQL/crash pattern. Result classes are `PASS`, `FAIL`, `BLOCKED`, and client `NOT RUN`.
+
+Run `python tests/local-runtime/run-readiness-tests.py` for one healthy and seven negative/window-order cases, and `tests/local-runtime/run-secret-lifecycle-tests.ps1` for create-once/assert/missing behavior. A running process with an open port must fail when integration markers are absent. `status`, `logs`, and `smoke` must preserve secret fingerprints. The `official` action additionally fails on rAthena `[Error]` output even where upstream exits 0. Client and gameplay behavior remain `NOT RUN`.

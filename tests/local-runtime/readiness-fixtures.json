@@ -1,0 +1,42 @@
+[
+  {
+    "name": "healthy-chain", "exit": 0, "expect": "READINESS_RESULT=PASS",
+    "login": "Connection of the char-server 'rAthena' accepted.\n",
+    "char": "Connected to login-server (connection #1).\nMap-server 0 loading complete.\n",
+    "map": "Loading 'db/re/item_db.yml'...\nDone loading '10' NPCs:\nSuccessfully logged on to Char Server (Connection: '1').\nMap Server is now online.\n"
+  },
+  {
+    "name": "char-refused", "exit": 1, "expect": "CHAR_REFUSED",
+    "login": "Connection of the char-server 'rAthena' REFUSED.\n", "char": "", "map": ""
+  },
+  {
+    "name": "char-no-login", "exit": 1, "expect": "LOGIN_UNREACHABLE",
+    "login": "", "char": "Can not connect to login-server.\n", "map": ""
+  },
+  {
+    "name": "map-no-char", "exit": 1, "expect": "CHAR_UNREACHABLE",
+    "login": "Connection of the char-server 'rAthena' accepted.\n",
+    "char": "Connected to login-server.\n",
+    "map": "failed to connect to char-server\n"
+  },
+  {
+    "name": "invalid-password", "exit": 1, "expect": "INTERSERVER_PASSWORD",
+    "login": "Invalid password (account: 's1', ip: hidden)\n", "char": "", "map": ""
+  },
+  {
+    "name": "live-but-broken", "exit": 1, "expect": "MISSING_CHAR_ACCEPTED",
+    "login": "server is ready on port 6900\n", "char": "server is ready on port 6121\n", "map": "server is ready on port 5121\n"
+  },
+  {
+    "name": "old-error-current-healthy", "exit": 0, "expect": "READINESS_RESULT=PASS", "marker": "CURRENT-CYCLE",
+    "login": "Connection of the char-server 'rAthena' REFUSED.\nCURRENT-CYCLE\nConnection of the char-server 'rAthena' accepted.\n",
+    "char": "Can not connect to login-server.\nCURRENT-CYCLE\nConnected to login-server.\nMap-server 0 loading complete.\n",
+    "map": "Connection to char-server failed 3\nCURRENT-CYCLE\nLoading 'db/re/item_db.yml'...\nDone loading '10' NPCs:\nSuccessfully logged on to Char Server.\nMap Server is now online.\n"
+  },
+  {
+    "name": "old-success-current-error", "exit": 1, "expect": "CHAR_REFUSED", "marker": "CURRENT-CYCLE",
+    "login": "Connection of the char-server 'rAthena' accepted.\nCURRENT-CYCLE\nConnection of the char-server 'rAthena' REFUSED.\n",
+    "char": "Connected to login-server.\nMap-server 0 loading complete.\nCURRENT-CYCLE\nCan not connect to login-server.\n",
+    "map": "Loading 'db/re/item_db.yml'...\nDone loading '10' NPCs:\nSuccessfully logged on to Char Server.\nMap Server is now online.\nCURRENT-CYCLE\nConnection to char-server failed 3\n"
+  }
+]

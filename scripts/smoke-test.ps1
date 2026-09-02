@@ -15,7 +15,14 @@ if (-not $Runtime) {
     $runtimeErrors = 0
     $repo = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
     $compose = Join-Path $repo "tools\local-runtime\compose.yml"
-    $env:RATHENA_SECRET_DIR = (Join-Path $repo ".cache\gate4a-secrets").Replace("\", "/")
+    $secretDir = Join-Path $repo ".cache\gate4a-secrets"
+    $env:RATHENA_SECRET_DIR = $secretDir.Replace("\", "/")
+    foreach ($name in @("db_password", "db_root_password", "inter_server_password")) {
+        if (-not (Test-Path -LiteralPath (Join-Path $secretDir $name) -PathType Leaf)) {
+            Write-Output "BLOCKED service=secrets category=MISSING_$($name.ToUpperInvariant())"
+            exit 2
+        }
+    }
     foreach ($service in @("db", "login", "char", "map")) {
         $container = (& docker compose -f $compose ps -q $service).Trim()
         if (-not $container) { Write-Output "$service`: FAIL (container missing)"; $runtimeErrors++; continue }
@@ -27,11 +34,30 @@ if (-not $Runtime) {
     foreach ($port in @(6900, 6121, 5121)) {
         if (Test-NetConnection -ComputerName 127.0.0.1 -Port $port -InformationLevel Quiet -WarningAction SilentlyContinue) { Write-Output "port $port`: PASS" } else { Write-Output "port $port`: FAIL"; $runtimeErrors++ }
     }
-    $logs = & docker compose -f $compose logs --no-color --tail 300 login char map 2>&1
-    $critical = $logs | Select-String -Pattern 'segmentation fault|panic|fatal error|failed to connect|access denied|sql error' -CaseSensitive:$false
-    if ($critical) { Write-Output "critical logs: FAIL (patterns found; inspect local-runtime logs)"; $runtimeErrors++ } else { Write-Output "critical logs: PASS" }
-    if ($runtimeErrors -gt 0) { exit 1 }
+    $logDir = Join-Path $repo (".cache\gate4a-smoke\{0}" -f [Guid]::NewGuid().ToString("N"))
+    New-Item -ItemType Directory -Force -Path $logDir | Out-Null
+    try {
+        $readinessArgs = @()
+        foreach ($service in @("login", "char", "map")) {
+            $container = (& docker compose -f $compose ps -q $service).Trim()
+            if (-not $container) { Write-Output "BLOCKED service=$service category=CONTAINER_MISSING"; $runtimeErrors++; continue }
+            $startedAt = (& docker inspect --format "{{.State.StartedAt}}" $container).Trim()
+            $serviceLogs = & docker logs --since $startedAt $container 2>&1
+            $logPath = Join-Path $logDir "$service.log"
+            [IO.File]::WriteAllLines($logPath, [string[]]$serviceLogs)
+            $readinessArgs += @("--$service", $logPath)
+        }
+        if ($readinessArgs.Count -eq 6) {
+            & python (Join-Path $repo "tools\local-runtime\readiness.py") @readinessArgs
+            if ($LASTEXITCODE -ne 0) { $runtimeErrors++ }
+        }
+    } finally {
+        if (Test-Path -LiteralPath $logDir) { Remove-Item -LiteralPath $logDir -Recurse -Force }
+    }
+    if ($runtimeErrors -gt 0) { Write-Output "SMOKE_RESULT=FAIL"; exit 1 }
+    Write-Output "SMOKE_RESULT=PASS"
 }
 Write-Output "--- CLIENT ---"
 foreach ($name in @("login", "character creation", "map entry", "movement", "combat", "EXP", "drops", "persistence", "NPC", "storage", "trade", "party", "guild", "progression", "rebirth", "Third/Fourth blocking")) { Write-Output "$name`: NOT RUN" }
+if ($Runtime -and $staticExit -ne 0) { Write-Output "SMOKE_RESULT=FAIL" }
 exit $staticExit

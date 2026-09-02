@@ -16,7 +16,8 @@ Gate 3 static validation does not implement a full rAthena script parser, prove 
 
 ## Gate 4A update
 
-- Docker build, MariaDB, baseline server chain, Renewal loading, shutdown/restart, and persistence are `TESTADO` only for `GATE4A_RUNTIME.md`; native Windows and production remain `NÃO TESTADO`.
+- The original Gate 4A integration evidence was false: a 32-character credential was truncated by 24-byte inter-server buffers, and PID/port health missed the refusal. The cause is corrected and regression-tested in `GATE4A_RUNTIME.md`.
+- Docker build, MariaDB, corrected baseline server chain, Renewal loading, shutdown/restart, persistence, and run-once are `TESTADO` only for the local Docker environment; native Windows and production remain `NÃO TESTADO`.
 - Runtime rates are not gameplay-sampled, and all exact-client cases remain `NOT RUN`.
 - The CI-derived all-custom-NPC check is `BLOQUEADO`: `npc/custom/events/disguise.txt` has a parser error and `npc/custom/card_seller.txt` expects SQL mirror tables not present in the YAML baseline.
 - The official Alpine image runs servers as root; PCRE and shared-object/plugin support were not built.
