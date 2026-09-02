@@ -25,6 +25,8 @@ def main() -> int:
                 args.extend((f"--{service}", str(path)))
             if case.get("marker"):
                 args.extend(("--marker", case["marker"]))
+            if case.get("mode"):
+                args.extend(("--mode", case["mode"]))
             result = subprocess.run(args, text=True, capture_output=True, check=False)
             expected = case["exit"]
             marker = case["expect"]

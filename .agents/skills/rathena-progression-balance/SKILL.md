@@ -5,6 +5,8 @@ description: Analyze or change jobs, progression, EXP tables, skill trees, comba
 
 # rAthena progression and balance
 
+For the tested Classic baseline, read `docs/codex/GATE4B_PRERENEWAL.md`. The profile validator may prove effective Transclass limits and rate separation, but rebirth, statistical rates, and Third/Fourth rejection remain client-functional tests; report them as such.
+
 Read `AGENTS.md`, `CURRENT_BASELINE.md`, `JOB_PROGRESSION.md`, `SKILLS_AND_COMBAT.md`, `DROPS_AND_SPAWNS.md`, `CLIENT_BOUNDARIES.md`, and `TESTING.md`. Trace active job/EXP/skill data, scripts, commands, class config, formulas, and every progression entry path.
 
 State measurable targets and preserve the permanent ban on enabling Third/Fourth Jobs. Prefer data/config/script mechanisms; require source evidence before C++. Test level/job boundaries, rebirth/transitions, invalid/GM paths, relog/restart, PvE/PvP/status/equipment interactions, economy, and exact-client representation.

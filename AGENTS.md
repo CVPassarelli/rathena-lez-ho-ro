@@ -1,6 +1,6 @@
 # rAthena server workspace
 
-This checkout is currently `CONFIRMADO NO CÓDIGO` as Renewal, with configured EXP/drop multipliers at 1x and default `PACKETVER 20211103`. The future Classic 99/70 target in [`docs/codex/CURRENT_BASELINE.md`](docs/codex/CURRENT_BASELINE.md) is not current state or authorization to implement it.
+The tested local profile is Pre-Renewal Classic 99/70 with EXP 10x, normal common/heal/use/equipment drops 5x, cards and boss/MVP categories 1x, and `PACKETVER 20211103`. Evidence and client-dependent limits are in [`docs/codex/CURRENT_BASELINE.md`](docs/codex/CURRENT_BASELINE.md); this baseline is not authorization for further gameplay changes.
 
 Before answering or editing, inspect Git and the relevant loaders, schemas, examples, and source. Start at [`docs/codex/README.md`](docs/codex/README.md), then load the matching skill from `.agents/skills/`: repository investigation; server configuration; scripts/quests/NPCs/instances; monsters/drops/spawns; items; progression/combat/balance; database; testing; client compatibility; or operations/upstream.
 

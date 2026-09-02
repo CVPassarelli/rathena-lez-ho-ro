@@ -38,7 +38,6 @@ REQUIRED = {
     "map": (
         (r"Successfully logged on to Char Server", "CHAR_CONNECTED"),
         (r"Map Server is now online", "MAP_ONLINE"),
-        (r"Loading 'db/re/", "RENEWAL_LOADER"),
         (r"Done loading '[0-9]+' NPCs", "NPC_LOADER"),
     ),
 }
@@ -51,7 +50,7 @@ def window(text: str, marker: str | None) -> str:
     return text
 
 
-def evaluate(logs: dict[str, str], marker: str | None = None) -> list[tuple[str, str, str]]:
+def evaluate(logs: dict[str, str], marker: str | None = None, mode: str = "re") -> list[tuple[str, str, str]]:
     findings: list[tuple[str, str, str]] = []
     for service in ("login", "char", "map"):
         text = window(logs[service], marker)
@@ -61,6 +60,9 @@ def evaluate(logs: dict[str, str], marker: str | None = None) -> list[tuple[str,
         for pattern, category in REQUIRED[service]:
             if not re.search(pattern, text, re.IGNORECASE):
                 findings.append(("FAIL", service, f"MISSING_{category}"))
+    mode_pattern = r"Loading 'db/pre-re/" if mode == "pre-re" else r"Loading 'db/re/"
+    if not re.search(mode_pattern, window(logs["map"], marker), re.IGNORECASE):
+        findings.append(("FAIL", "map", f"MISSING_{mode.upper().replace('-', '_')}_LOADER"))
     return findings
 
 
@@ -70,6 +72,7 @@ def main() -> int:
     parser.add_argument("--char", required=True, type=Path)
     parser.add_argument("--map", required=True, type=Path)
     parser.add_argument("--marker")
+    parser.add_argument("--mode", choices=("re", "pre-re"), default="re")
     args = parser.parse_args()
     paths = {"login": args.login, "char": args.char, "map": args.map}
     missing = [service for service, path in paths.items() if not path.is_file()]
@@ -78,7 +81,7 @@ def main() -> int:
             print(f"BLOCKED service={service} category=LOG_NOT_AVAILABLE")
         return 2
     logs = {service: path.read_text(encoding="utf-8", errors="replace") for service, path in paths.items()}
-    findings = evaluate(logs, args.marker)
+    findings = evaluate(logs, args.marker, args.mode)
     if findings:
         for status, service, category in sorted(set(findings)):
             print(f"{status} service={service} category={category}")

@@ -48,8 +48,21 @@ if (-not $Runtime) {
             $readinessArgs += @("--$service", $logPath)
         }
         if ($readinessArgs.Count -eq 6) {
+            $readinessArgs += @("--mode", "pre-re")
             & python (Join-Path $repo "tools\local-runtime\readiness.py") @readinessArgs
             if ($LASTEXITCODE -ne 0) { $runtimeErrors++ }
+        }
+        $mapContainer = (& docker compose -f $compose ps -q map).Trim()
+        if ($mapContainer) {
+            $runtimeProfile = Join-Path $logDir "battle_conf.txt"
+            & docker cp "${mapContainer}:/work/conf/import/battle_conf.txt" $runtimeProfile 2>$null
+            $validatorPython = Join-Path $repo ".cache\custom-validation-venv\Scripts\python.exe"
+            & $validatorPython (Join-Path $repo "tools\local-runtime\validate-classic-profile.py") `
+                --profile (Join-Path $repo "tools\local-runtime\profiles\classic-99-70\battle_conf.txt") `
+                --runtime $runtimeProfile --job-db (Join-Path $repo "db\pre-re\job_exp.yml")
+            if ($LASTEXITCODE -ne 0) { $runtimeErrors++ }
+            & docker exec $mapContainer grep -q -- "-DPRERE" /work/config.log
+            if ($LASTEXITCODE -eq 0) { Write-Output "build mode: PASS (PRERE compiler flag)" } else { Write-Output "build mode: FAIL (PRERE flag missing)"; $runtimeErrors++ }
         }
     } finally {
         if (Test-Path -LiteralPath $logDir) { Remove-Item -LiteralPath $logDir -Recurse -Force }

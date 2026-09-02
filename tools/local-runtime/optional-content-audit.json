@@ -1,0 +1,20 @@
+{
+  "Entries": [
+    {
+      "Path": "npc/custom/events/disguise.txt",
+      "ExpectedLoaded": false,
+      "Classification": "UNSUPPORTED_BY_ACTIVE_BUILD",
+      "Dependency": "PCRE_SUPPORT built-ins including deletepset",
+      "RuntimeImpact": "NONE_WHILE_DISABLED",
+      "EnablementRequirement": "Rebuild with compatible PCRE and run parser plus functional event tests"
+    },
+    {
+      "Path": "npc/custom/card_seller.txt",
+      "ExpectedLoaded": false,
+      "Classification": "OPTIONAL_SQL_DEPENDENCY",
+      "Dependency": "Populated item_db/mob_db or item_db_re/mob_db_re SQL mirrors",
+      "RuntimeImpact": "NONE_WHILE_DISABLED",
+      "EnablementRequirement": "Explicitly generate and import mode-compatible YAML mirrors before enabling"
+    }
+  ]
+}

@@ -38,8 +38,8 @@ services:
       context: ../docker
       dockerfile: Dockerfile
     working_dir: /work
-    environment:
-      BUILDER_CONFIGURE: --enable-packetver=20211103
+    env_file:
+      - ./profiles/classic-99-70/build.env
     volumes:
       - ../../:/source:ro
       - work:/work
@@ -55,6 +55,7 @@ services:
     volumes:
       - work:/work
       - runtime_conf:/work/conf/import
+      - ./profiles/classic-99-70:/profile:ro
       - ./write-config.sh:/opt/write-config.sh:ro
     command: ["/bin/sh", "/opt/write-config.sh"]
     depends_on:
@@ -111,6 +112,40 @@ services:
       interval: 5s
       timeout: 3s
       retries: 30
+
+  upstream-validation-db:
+    profiles: ["upstream-validation"]
+    image: mariadb:11.4
+    restart: "no"
+    environment:
+      MARIADB_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+    secrets: [db_root_password]
+    tmpfs:
+      - /var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+
+  upstream-full:
+    profiles: ["upstream-validation"]
+    image: rathena-gate4b-upstream-validation:local
+    build:
+      context: .
+      dockerfile: upstream-validation.Dockerfile
+    working_dir: /validation
+    environment:
+      RATHENA_VALIDATION_ONLY: "1"
+    secrets: [db_password, db_root_password]
+    volumes:
+      - ../../:/source:ro
+      - ./upstream-full-validation.sh:/opt/upstream-full-validation.sh:ro
+    command: ["/bin/bash", "/opt/upstream-full-validation.sh"]
+    depends_on:
+      upstream-validation-db:
+        condition: service_healthy
 
 secrets:
   db_password:

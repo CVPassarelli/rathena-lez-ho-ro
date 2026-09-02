@@ -1,5 +1,9 @@
 # Configuration
 
+## Gate 4B tested profile
+
+`tools/local-runtime/profiles/classic-99-70/` is the versioned, sanitized source for the local build mode and rates. Compose mounts it read-only; `write-config.sh` generates `conf/import/battle_conf.txt` inside the ignored `runtime_conf` volume. `build.sh` always re-runs Autotools configuration and `make clean`, preventing a reused build volume from retaining Renewal flags. `validate-classic-profile.py` compares tracked and runtime rate files and verifies the official Pre-Renewal job database. See `GATE4B_PRERENEWAL.md` for tested values and rollback.
+
 Main entry files are `conf/login_athena.conf`, `char_athena.conf`, `map_athena.conf`, `inter_athena.conf`, `inter_server.yml`, `battle_athena.conf`, `script_athena.conf`, and `packet_athena.conf`. They load modular files and end with targets under `conf/import/`; templates are in `conf/import-tmpl/`. The target directory is Git-ignored and absent in this checkout, so create only the required override file in a later authorized change.
 
 Workflow: locate the parser/reference, inspect the effective import order, add the smallest override, document old/new semantics, and test startup plus runtime behavior. Never invent keys or assume reload support. Secrets and environment-specific addresses belong outside version control. Current runtime effective values have not been tested.

@@ -1,24 +1,14 @@
 # Known limitations
 
-- Build, MariaDB connectivity/schema application, all server startups and integration are `NÃO TESTADO`.
-- Runtime rates and active database selection have not been observed; file evidence only confirms configured defaults and compile-time Renewal switches.
-- Rebirth support and Pre-Renewal Base 99/Trans Job 70 are Gate 1 baseline findings, not end-to-end tests.
-- Third/Fourth Job inaccessibility is unverified and must not be claimed.
-- Exact client executable, data files, assets, and compatibility with `PACKETVER 20211103` are unknown.
-- No safe custom ID ranges are confirmed.
-- Configured, Git-ignored custom targets `conf/import/` and `db/import/` are absent; no active custom override in them was inspected.
-- No custom content, DB migration, deployment, or operational change is part of Gate 2.
-- The final tracking/provisioning policy for ignored imports is `BLOQUEADO` until the pre-Gate-4 decision in `IMPORTS_POLICY.md`.
+- Gate 4B proves the local Docker build, Pre-Renewal loaders, server integration, restart, persistence, and effective configuration only on this checkout and host. Native Windows, WSL-only, production, deploy, and cloud operation remain `NOT TESTED`.
+- EXP and drop multipliers are proven in the loaded configuration, not by statistical gameplay sampling. Client execution is required before calling their gameplay effect `TESTED`.
+- Rebirth files and loader path are present, but the complete novice → trans progression is `DEPENDS ON CLIENT`.
+- Third/Fourth job-change scripts from `npc/re/scripts_jobs.conf` are excluded by the Pre-Renewal loader. Alternate GM commands and unexpected paths remain `NOT TESTED`; functional blocking belongs to Gate 4C.
+- Exact client executable/data/GRF compatibility with `PACKETVER 20211103` remains unknown. The runtime warns that `mesitemicon` needs a newer packet version and disables that feature; PACKETVER was intentionally not changed.
+- `map-server --run-once` reports empty roulette data and fills display slots with Apples. This is an upstream-data warning, not a Gate 4B critical loader failure.
+- The operational Alpine image runs services as root; PCRE and shared-object/plugin support are not built. The isolated upstream-full image has PCRE only for faithful optional-content validation.
+- `disguise.txt` and `card_seller.txt` pass upstream-full PRE/RE validation when PCRE and SQL mirrors are present, but remain disabled and functionally untested. See `NPC_VALIDATION.md`.
+- No safe custom ID range has been selected and no custom content exists.
+- The database contains 66 tables and persists, but Gate 4B does not alter or functionally exercise player records.
 
-Resolve each limitation in a later authorized gate with recorded commands, environment, logs, and results.
-
-Gate 3 static validation does not implement a full rAthena script parser, prove semantic item scripts or balance, load databases, start servers, or verify a client. Those require official built tools/`map-server --run-once`, Gate 4 runtime, or the exact client. PyYAML is a pinned isolated validator dependency, not an rAthena dependency.
-
-## Gate 4A update
-
-- The original Gate 4A integration evidence was false: a 32-character credential was truncated by 24-byte inter-server buffers, and PID/port health missed the refusal. The cause is corrected and regression-tested in `GATE4A_RUNTIME.md`.
-- Docker build, MariaDB, corrected baseline server chain, Renewal loading, shutdown/restart, persistence, and run-once are `TESTADO` only for the local Docker environment; native Windows and production remain `NÃO TESTADO`.
-- Runtime rates are not gameplay-sampled, and all exact-client cases remain `NOT RUN`.
-- The CI-derived all-custom-NPC check is `BLOQUEADO`: `npc/custom/events/disguise.txt` has a parser error and `npc/custom/card_seller.txt` expects SQL mirror tables not present in the YAML baseline.
-- The official Alpine image runs servers as root; PCRE and shared-object/plugin support were not built.
-- OneDrive did not block the read-only source copy, but the initial copy was slow; other hosts/sync states are unproven.
+Resolve client-dependent limitations in Gate 4C. Do not infer them from source inspection or a successful server smoke.

@@ -5,6 +5,10 @@ description: Plan, run, or report build, startup, functional, exploit, client, a
 
 # rAthena testing and regression
 
+For NPC validation, read `docs/codex/NPC_VALIDATION.md` and select exactly one named scope. Require `VALIDATION_SCOPE`/`VALIDATION_RESULT`; never substitute the optional audit for active run-once or omit upstream SQL/PCRE preparation from full validation.
+
+When validating the Classic profile, also read `docs/codex/GATE4B_PRERENEWAL.md`, execute the profile fixtures, require the effective `PRERE` compiler flag and Pre-Renewal loaders, and keep configuration evidence separate from client/gameplay evidence.
+
 Read `AGENTS.md`, `TESTING.md`, `CHANGE_CHECKLIST.md`, `CURRENT_BASELINE.md`, and the changed domain docs. Record revision/environment, inspect real build/tool entry points, and select checks proportional to risk. Never invent commands or claim unrun tests.
 
 Cover static format/references, build, isolated DB, login/char/map startup/integration, positive/negative/boundary behavior, persistence, reload/restart, duplication/concurrency/exploits, adjacent regression, and exact client where applicable. Preserve logs and distinguish failure from blocked infrastructure.

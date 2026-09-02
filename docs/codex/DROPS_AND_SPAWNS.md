@@ -1,5 +1,9 @@
 # Drops and spawns
 
+## Gate 4B rate separation
+
+The tested runtime configuration sets normal common/healing/usable/equipment categories to `500` while every corresponding `_boss` and `_mvp` key stays `100`. Normal, boss, and MVP card keys stay `100`; `item_rate_mvp`, add-drop, group, and treasure also stay `100`. The exact matrix and owning code are documented in `GATE4B_PRERENEWAL.md`. Configuration is `TESTED`; observed drop statistics remain `DEPENDENT ON CLIENT`.
+
 Monster drops are in mob databases; map-wide drops use `db/map_drops.yml`; spawns are script entries under `npc/`. Global multipliers and caps are in `conf/battle/drops.conf`; Renewal penalties may also affect effective chance.
 
 Record base chance (the YAML comments use 10000 = 100% where applicable), rate category/effects, map, count, respawn, autoloot behavior, economic target, and automation risk. Validate mob/item/map references and calculate caps/penalties from actual source/config. Test statistical samples, autoloot, reload/restart, spawn saturation, kill credit, and farm abuse. Never infer runtime chance solely from the database number.

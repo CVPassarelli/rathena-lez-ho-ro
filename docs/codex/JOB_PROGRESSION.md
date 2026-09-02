@@ -1,5 +1,9 @@
 # Job progression
 
+## Gate 4B evidence
+
+The freshly compiled `PRERE` Map Server loaded `db/pre-re/job_exp.yml`, `job_stats.yml`, `job_aspd.yml`, `job_basepoints.yml`, and `skill_tree.yml`. `validate-classic-profile.py` confirms every listed Transclass at Base 99 / Job 70. `npc/pre-re/scripts_jobs.conf` includes the shared rebirth/Transclass flow, including `npc/jobs/valkyrie.txt`; it excludes Renewal Third/Fourth loaders. This is loader-level evidence, not a client progression test. GM commands and alternate transition paths remain Gate 4C cases.
+
 Relevant data includes `db/*/job_exp.yml`, `job_stats.yml`, `skill_tree.yml`, `job_basepoints.yml`, `job_aspd.yml`, `conf/battle/player.conf`, job scripts under `npc/jobs/`, and class configuration/source under `src/config/classes/` and `src/map/`.
 
 The desired future state is Base 99/Trans Job 70 with rebirth and inaccessible Third/Fourth Jobs, but no enforcement is confirmed. Trace every entry route: creation, job-change NPCs, commands, items/scripts, skill trees, level tables, and client UI. Test normal, rebirth/trans, max levels, invalid transitions, relog/restart, GM paths, and packet/client representation. Permanent rule: do not enable Third/Fourth Jobs.

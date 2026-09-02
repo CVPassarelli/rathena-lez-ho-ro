@@ -1,0 +1,8 @@
+{
+  "Cases": [
+    {"Name": "active-clean", "Scope": "ACTIVE_RUNTIME", "Expected": 0, "Log": "[Status]: Server is 'ready'.\n[Status]: Finished.\n"},
+    {"Name": "active-parser-error", "Scope": "ACTIVE_RUNTIME", "Expected": 1, "Log": "[Error]: script error on npc/custom/active.txt line 2\nparse_line: expect command\n"},
+    {"Name": "active-sql-missing", "Scope": "ACTIVE_RUNTIME", "Expected": 1, "Log": "[SQL]: DB error - Table 'runtime.required_table' doesn't exist\n"},
+    {"Name": "upstream-clean", "Scope": "UPSTREAM_FULL", "Expected": 0, "Log": "[Status]: Server is 'ready'.\n[Status]: Finished.\n"}
+  ]
+}

@@ -5,6 +5,8 @@ description: Design, implement, or review rAthena script-engine work, quests, NP
 
 # rAthena script content
 
+For validation or enablement of shipped optional NPCs, read `docs/codex/NPC_VALIDATION.md`. Prove whether a file belongs to the active loader before interpreting errors, and verify conditional build/SQL dependencies. Active errors always fail; disabled-file findings belong to the optional audit and must not be treated as gameplay-tested.
+
 Read `AGENTS.md`, `SCRIPT_ENGINE.md`, plus `QUESTS.md`, `NPCS.md`, or `INSTANCES_AND_EVENTS.md` as applicable; also read `CUSTOM_CONTENT_RULES.md`, `ID_REGISTRY.md`, `CLIENT_BOUNDARIES.md`, and `TESTING.md`. Verify commands in `doc/script_commands.txt`/source and patterns in nearby scripts. Use `npc/custom/` and register through `npc/scripts_custom.conf`.
 
 Model states, scopes, persistence, requirements, item consumption, rewards, cooldowns, party/concurrency, reconnect/restart, and duplication prevention. Register IDs before implementation. Test positive, negative, interruption, persistence, exploit, reload, and client-dependent cases.

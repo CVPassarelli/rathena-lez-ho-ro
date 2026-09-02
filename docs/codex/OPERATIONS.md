@@ -1,5 +1,9 @@
 # Operations
 
+## Gate 4B profile operation
+
+The selected local profile is `tools/local-runtime/profiles/classic-99-70/`. `setup` now always reconfigures and clean-builds, then provisions the sanitized battle override and existing secrets. `start`, `status`, `logs`, `smoke`, `stop`, and `restart` still assert secrets rather than generating them. Use `smoke` as the readiness authority and `run-once` for loaders. Mode rollback requires a rebuild/profile change, never database-volume removal; see `GATE4B_PRERENEWAL.md`.
+
 Operational entry points include `athena-start`, platform scripts under `tools/`, server binaries after build, and configuration under `conf/`. Inspect each command before execution; do not invent flags.
 
 Use non-production environments, least privilege, explicit process/database targets, backups before migrations, log review, health checks, and a tested rollback. Never deploy automatically, create accounts, change AWS, expose credentials, or run destructive SQL without explicit scope and authorization. Startup and shutdown procedures remain `NÃO TESTADO` here.

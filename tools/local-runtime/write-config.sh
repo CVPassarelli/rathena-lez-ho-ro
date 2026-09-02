@@ -8,6 +8,8 @@ mkdir -p /work/conf/import
 # These optional imports are loaded unconditionally. Seed the isolated override
 # volume from rAthena's own templates, then replace only local DB/network values.
 cp -R /work/conf/import-tmpl/. /work/conf/import/
+test -f /profile/battle_conf.txt
+cp /profile/battle_conf.txt /work/conf/import/battle_conf.txt
 cat > /work/conf/import/inter_conf.txt <<EOF
 login_server_ip: db
 login_server_id: ${RATHENA_DB_USER}

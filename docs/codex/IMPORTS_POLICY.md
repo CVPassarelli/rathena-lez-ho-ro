@@ -1,5 +1,9 @@
 # Ignored imports policy proposal
 
+## Gate 4B confirmed extension
+
+`tools/local-runtime/profiles/classic-99-70/battle_conf.txt` and `build.env` are tracked, sanitized inputs; `write-config.sh` copies only the battle override into the ignored runtime volume while Docker secrets remain separate. This tested pattern is idempotent, needs no force-add, and minimizes upstream conflict. Custom gameplay YAML policy remains undecided.
+
 Purpose: prepare the pre-Gate-4 decision without changing `.gitignore`. Repository mechanics below are `CONFIRMADO NO CÓDIGO`; the final policy is `BLOQUEADO` pending approval.
 
 ## Evidence and rationale

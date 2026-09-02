@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param(
-    [ValidateSet("setup", "start", "stop", "restart", "status", "logs", "run-once", "official", "smoke", "backup-inter-server", "repair-inter-server", "rotate-inter-server")]
+    [ValidateSet("setup", "start", "stop", "restart", "status", "logs", "run-once", "active-runtime", "upstream-full", "optional-audit", "official", "smoke", "backup-inter-server", "repair-inter-server", "rotate-inter-server")]
     [string]$Action = "status",
     [string]$SecretDirectory
 )
@@ -121,6 +121,17 @@ if ($Action -eq "setup") {
     foreach ($name in @("db_password", "db_root_password", "inter_server_password")) {
         if (-not (Test-Path -LiteralPath (Join-Path $secretDir $name) -PathType Leaf)) { throw "Required local secret '$name' is missing." }
     }
+} elseif ($Action -eq "optional-audit") {
+    # Static optional-content classification does not need runtime credentials.
+} elseif ($Action -in @("active-runtime", "upstream-full", "official")) {
+    try {
+        Assert-LocalRuntimeSecrets -SecretDirectory $secretDir
+    } catch {
+        $scope = if ($Action -eq "active-runtime") { "ACTIVE_RUNTIME" } else { "UPSTREAM_FULL" }
+        Write-Output "VALIDATION_SCOPE=$scope"
+        Write-Output "VALIDATION_RESULT=BLOCKED"
+        exit 3
+    }
 } else {
     # Read-only and operational actions must never create or rotate secrets.
     Assert-LocalRuntimeSecrets -SecretDirectory $secretDir
@@ -141,7 +152,43 @@ switch ($Action) {
     "status" { Invoke-Compose @("ps", "-a") }
     "logs" { Invoke-Compose @("logs", "--no-color", "--tail", "200", "db", "login", "char", "map") }
     "run-once" { Invoke-Compose @("run", "--rm", "--no-deps", "map", "/work/map-server", "--run-once") }
-    "official" { Invoke-Compose @("run", "--rm", "--no-deps", "map", "/bin/bash", "/source/tools/local-runtime/official-validation.sh") }
+    "active-runtime" {
+        $shell = (Get-Process -Id $PID).Path
+        & $shell -NoProfile -File (Join-Path $PSScriptRoot "smoke-test.ps1") -Runtime
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+        & docker compose -f $compose run --rm --no-deps map /bin/bash /source/tools/local-runtime/active-runtime-validation.sh
+        exit $LASTEXITCODE
+    }
+    "upstream-full" {
+        & docker compose -f $compose --profile upstream-validation up -d --wait --force-recreate upstream-validation-db
+        if ($LASTEXITCODE -ne 0) { Write-Output "VALIDATION_SCOPE=UPSTREAM_FULL"; Write-Output "VALIDATION_RESULT=BLOCKED"; exit 3 }
+        try {
+            & docker compose -f $compose --profile upstream-validation run --rm upstream-full
+            $validationExit = $LASTEXITCODE
+        } finally {
+            & docker compose -f $compose --profile upstream-validation stop upstream-validation-db | Out-Null
+        }
+        exit $validationExit
+    }
+    "optional-audit" {
+        $python = Join-Path $repo ".cache\custom-validation-venv\Scripts\python.exe"
+        if (-not (Test-Path -LiteralPath $python)) { Write-Output "VALIDATION_SCOPE=OPTIONAL_CONTENT"; Write-Output "VALIDATION_RESULT=BLOCKED"; exit 3 }
+        & $python (Join-Path $repo "tools\local-runtime\validation-scope.py") audit --repo $repo --manifest (Join-Path $repo "tools\local-runtime\optional-content-audit.json")
+        exit $LASTEXITCODE
+    }
+    "official" {
+        Write-Output "VALIDATION_SCOPE=UPSTREAM_FULL"
+        Write-Output "The 'official' alias now invokes the faithful isolated upstream-full scope."
+        & docker compose -f $compose --profile upstream-validation up -d --wait --force-recreate upstream-validation-db
+        if ($LASTEXITCODE -ne 0) { Write-Output "VALIDATION_RESULT=BLOCKED"; exit 3 }
+        try {
+            & docker compose -f $compose --profile upstream-validation run --rm upstream-full
+            $validationExit = $LASTEXITCODE
+        } finally {
+            & docker compose -f $compose --profile upstream-validation stop upstream-validation-db | Out-Null
+        }
+        exit $validationExit
+    }
     "smoke" {
         $shell = (Get-Process -Id $PID).Path
         & $shell -NoProfile -File (Join-Path $PSScriptRoot "smoke-test.ps1") -Runtime

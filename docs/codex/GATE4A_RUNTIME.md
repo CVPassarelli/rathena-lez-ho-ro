@@ -1,5 +1,7 @@
 # Gate 4A local runtime
 
+> Historical baseline: this records the tested Renewal 1x state before Gate 4B. The current effective profile is documented in `GATE4B_PRERENEWAL.md`.
+
 Purpose: reproduce and audit the tested Renewal baseline on Windows PowerShell through Docker Desktop. This is a development environment, as stated by `tools/docker/README.md`; it is not a deployment design.
 
 ## Tested environment and architecture
@@ -47,7 +49,7 @@ Baseline runtime loaded Renewal paths including `db/re/skill_db.yml`, `db/re/mob
 
 Warnings: the official image runs rAthena as root; PCRE and shared-object/plugin support were absent; empty roulette data fills defaults; `mesitemicon` is disabled because it needs a newer packet date. Do not change `PACKETVER` to silence that warning.
 
-The broader CI-derived `official` action enables every `npc/custom` and `npc/test` script. It returns exit 1 because `npc/custom/events/disguise.txt` has a parser error at its `deletepset` call and `npc/custom/card_seller.txt` expects SQL mirror tables absent from this YAML baseline. The upstream executable itself returned 0 despite those errors, so the wrapper scans for `[Error]`, `script error`, and `DB error`. Normal baseline loading does not enable those scripts and passed. Do not edit those upstream examples in this gate.
+Historical correction: the old CI-derived `official` action was incomplete. It enabled every custom/test NPC but omitted the upstream SQL-import step and used a build without PCRE. This caused `disguise.txt` to lack its conditional `deletepset` built-in and `card_seller.txt` to lack optional SQL mirrors. Gate 4B replaced it with the scoped, faithful validation in `NPC_VALIDATION.md`; both files pass PRE and RE when their upstream prerequisites are present.
 
 ## Client boundary and rollback
 

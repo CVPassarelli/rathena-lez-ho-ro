@@ -6,6 +6,12 @@
     "map": "Loading 'db/re/item_db.yml'...\nDone loading '10' NPCs:\nSuccessfully logged on to Char Server (Connection: '1').\nMap Server is now online.\n"
   },
   {
+    "name": "healthy-pre-re-chain", "exit": 0, "expect": "READINESS_RESULT=PASS", "mode": "pre-re",
+    "login": "Connection of the char-server 'rAthena' accepted.\n",
+    "char": "Connected to login-server (connection #1).\nMap-server 0 loading complete.\n",
+    "map": "Loading 'db/pre-re/job_exp.yml'...\nDone loading '10' NPCs:\nSuccessfully logged on to Char Server (Connection: '1').\nMap Server is now online.\n"
+  },
+  {
     "name": "char-refused", "exit": 1, "expect": "CHAR_REFUSED",
     "login": "Connection of the char-server 'rAthena' REFUSED.\n", "char": "", "map": ""
   },
