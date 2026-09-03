@@ -129,6 +129,27 @@ services:
       retries: 30
       start_period: 20s
 
+  account-validation-db:
+    profiles: ["account-validation"]
+    image: mariadb:11.4
+    restart: "no"
+    environment:
+      MARIADB_DATABASE: rathena_gate4a
+      MARIADB_USER: rathena_gate4a
+      MARIADB_PASSWORD_FILE: /run/secrets/db_password
+      MARIADB_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+    secrets: [db_password, db_root_password]
+    tmpfs:
+      - /var/lib/mysql
+    volumes:
+      - ../../:/source:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+
   upstream-full:
     profiles: ["upstream-validation"]
     image: rathena-gate4b-upstream-validation:local

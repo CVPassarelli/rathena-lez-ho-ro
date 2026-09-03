@@ -5,6 +5,8 @@ description: Analyze rAthena server/client compatibility, PACKETVER coordination
 
 # rAthena client compatibility
 
+For this checkout, `PACKETVER 20211103` selects the RagexeRE branch in `src/config/packets.hpp`. Require an exact authorized executable identity and matching resources; the prepared manual sequence is `docs/codex/GATE4C_CLIENT_RUNBOOK.md`.
+
 Read `AGENTS.md`, `CLIENT_BOUNDARIES.md`, `CURRENT_BASELINE.md`, `ID_REGISTRY.md`, and the feature domain document. Inventory the exact executable date/type, server `PACKETVER`, packet/source gates, item information, icons, sprites, maps, GRF/data tables, and existing resources. Treat `20211103` as current state only.
 
 Classify every change with the boundary table and verify against the exact client, not historical assumptions. Do not download/distribute assets or modify `PACKETVER` without analysis and approval. Test login, character select, map entry, packets/UI, visible resources, and failure modes when an authorized client is available.

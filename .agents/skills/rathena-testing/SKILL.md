@@ -5,6 +5,8 @@ description: Plan, run, or report build, startup, functional, exploit, client, a
 
 # rAthena testing and regression
 
+Gate 4C1 adds isolated progression fixtures and a MariaDB-tmpfs account suite documented in `docs/codex/TESTING.md`. Never run account tests against the persistent `db` service, and never turn prepared Gate 4C2 rows into `TESTADO` without the exact client.
+
 For NPC validation, read `docs/codex/NPC_VALIDATION.md` and select exactly one named scope. Require `VALIDATION_SCOPE`/`VALIDATION_RESULT`; never substitute the optional audit for active run-once or omit upstream SQL/PCRE preparation from full validation.
 
 When validating the Classic profile, also read `docs/codex/GATE4B_PRERENEWAL.md`, execute the profile fixtures, require the effective `PRERE` compiler flag and Pre-Renewal loaders, and keep configuration evidence separate from client/gameplay evidence.

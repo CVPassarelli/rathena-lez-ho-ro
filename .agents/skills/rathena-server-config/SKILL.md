@@ -5,6 +5,8 @@ description: Change or review rAthena server configuration, rates, mode switches
 
 # rAthena server configuration
 
+Gate 4C preserves the Classic profile and loopback-only Compose mappings. Account tooling is operational SQL work, not authorization to change rates, mode, loaders, advertised addresses or `PACKETVER`.
+
 When an optional script depends on a compile feature or SQL mirror, consult `docs/codex/NPC_VALIDATION.md`; do not enable it through a loader until the active build and provisioning explicitly satisfy that dependency.
 
 For the local Classic profile, also read `docs/codex/GATE4B_PRERENEWAL.md`. Treat compile mode as generated state: re-run the official configure mechanism, clean-build, verify the effective compiler flag and active DB/NPC loaders, then validate tracked and runtime configuration. Never infer a mode change from the profile file alone.

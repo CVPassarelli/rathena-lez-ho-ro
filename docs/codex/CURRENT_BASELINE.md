@@ -1,5 +1,9 @@
 # Current baseline
 
+## Gate 4C1 server-side extension
+
+Without changing the Gate 4B gameplay profile, Gate 4C1 adds static/fixture validation for all 13 Transclass IDs, scripts, skill trees, Base 99 / Job 70, Valkyrie loader presence, excluded Renewal job loaders and disabled custom jobmaster. Local account creation/group tools are tested against MariaDB tmpfs only; no persistent account or GM was created. `20211103` is confirmed by source as the RagexeRE packet branch, but no exact client was supplied. All NPC interaction, rebirth, leveling, Third/Fourth attempts and visual/client behavior remain `NOT RUN`/`DEPENDE DO CLIENT`.
+
 Purpose: distinguish the effective local baseline from source-only evidence and client-dependent behavior.
 
 ## Gate 4B effective local state

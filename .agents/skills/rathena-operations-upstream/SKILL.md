@@ -5,6 +5,8 @@ description: Plan or perform authorized rAthena operations, security review, sta
 
 # rAthena operations and upstream
 
+For local Gate 4C account actions, require the exact `rathena_gate4a` target, interactive secret entry, normal group 0 by default, and an explicit reversible group-99 action. Fixture tests belong only in MariaDB tmpfs; do not create persistent accounts during validation.
+
 Read `AGENTS.md`, `OPERATIONS.md`, `SECURITY.md`, `UPSTREAM_MAINTENANCE.md`, `CHANGE_CHECKLIST.md`, and `KNOWN_LIMITATIONS.md`. Inspect Git/user changes and real scripts before commands. For upstream work inventory custom imports, schema/loader/packet changes, SQL upgrades, build dependencies, and client contract.
 
 Use least privilege, explicit targets, backups, health/log checks, and recoverable rollback. Never auto-deploy, auto-run migrations, expose secrets, create accounts, modify AWS, or discard conflicts/user work. Validate formats, build, isolated schema, server integration, regression, ID collisions, and client compatibility as authorized.

@@ -1,5 +1,12 @@
 # Testing
 
+## Gate 4C1 server-side suites
+
+- `python tests/local-runtime/run-progression-tests.py` exercises a valid model plus wrong 99/70, Renewal loader and enabled-jobmaster negatives. Run it with the repository validation venv when global PyYAML is absent.
+- `python tools/local-runtime/validate-classic-progression.py --repo .` checks the effective build profile, official Pre-Renewal job/skill data, loader closure, Valkyrie/Transclass scripts, disabled Renewal/jobmaster paths and the GM command path. It does not parse script behavior; `map-server --run-once` remains authoritative.
+- The `account-validation-db` Compose profile uses MariaDB `tmpfs`. Run `account-management-tests.sh` inside it to cover normal creation, duplicate, invalid input, injection/table integrity, wrong target and group 99 -> 0. It must be stopped afterward and must never target the persistent `db` service.
+- Client, NPC interaction, leveling, rebirth, Third/Fourth attempts and visual persistence stay `NOT RUN` until the Gate 4C2 runbook is executed by the user with the exact client.
+
 ## Explicit NPC validation scopes
 
 Use `active-runtime`, `upstream-full`, or `optional-audit` from `scripts/local-runtime.ps1`; never use an ambiguous “official failed” result. `ACTIVE_RUNTIME` is authoritative for the deployed loader set and must fail on every active parser/SQL/runtime error. `UPSTREAM_FULL` uses isolated PCRE and MariaDB `tmpfs` to reproduce both upstream modes with generated/imported SQL. `OPTIONAL_CONTENT` reports disabled dependencies without changing active success. Exit codes are 0 pass, 1 scoped failure, and 3 blocked prerequisite. Commands, equivalence table, and file classifications are in `NPC_VALIDATION.md`.

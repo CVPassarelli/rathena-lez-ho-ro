@@ -5,6 +5,8 @@ description: Analyze or change jobs, progression, EXP tables, skill trees, comba
 
 # rAthena progression and balance
 
+For Gate 4C progression work, also read `docs/codex/GATE4C_CLIENT_RUNBOOK.md`. Use `tools/local-runtime/validate-classic-progression.py` only for loader/data contracts; keep NPC interaction, rebirth, actual job changes and visual results client-dependent.
+
 For the tested Classic baseline, read `docs/codex/GATE4B_PRERENEWAL.md`. The profile validator may prove effective Transclass limits and rate separation, but rebirth, statistical rates, and Third/Fourth rejection remain client-functional tests; report them as such.
 
 Read `AGENTS.md`, `CURRENT_BASELINE.md`, `JOB_PROGRESSION.md`, `SKILLS_AND_COMBAT.md`, `DROPS_AND_SPAWNS.md`, `CLIENT_BOUNDARIES.md`, and `TESTING.md`. Trace active job/EXP/skill data, scripts, commands, class config, formulas, and every progression entry path.

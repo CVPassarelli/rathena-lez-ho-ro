@@ -1,5 +1,25 @@
 # Operations
 
+## Gate 4C1 local account operations
+
+Create a normal account only after the persistent local runtime is intentionally selected:
+
+```powershell
+.\scripts\local-runtime.ps1 create-account -Username <username> -Sex M
+```
+
+Omit `-Password` to receive the secure interactive prompt. Duplicate usernames and invalid input fail without changing rows. The action never creates a GM.
+
+Temporary admin elevation is separate and reversible:
+
+```powershell
+.\scripts\local-runtime.ps1 set-account-group -Username <username> -GroupId 99 -ConfirmLocalAdmin
+# perform only the authorized local test, then immediately:
+.\scripts\local-runtime.ps1 set-account-group -Username <username> -GroupId 0 -ConfirmLocalAdmin
+```
+
+Both operations assert the Compose DB name `rathena_gate4a`; group changes are restricted to one normal M/F account at or above ID 2000000. Review Map command logs after GM use. No persistent account was created or elevated during Gate 4C1; validation used the isolated `account-validation-db` tmpfs profile.
+
 ## Gate 4B profile operation
 
 The selected local profile is `tools/local-runtime/profiles/classic-99-70/`. `setup` now always reconfigures and clean-builds, then provisions the sanitized battle override and existing secrets. `start`, `status`, `logs`, `smoke`, `stop`, and `restart` still assert secrets rather than generating them. Use `smoke` as the readiness authority and `run-once` for loaders. Mode rollback requires a rebuild/profile change, never database-volume removal; see `GATE4B_PRERENEWAL.md`.

@@ -1,5 +1,13 @@
 # Known limitations
 
+## Gate 4C1 update
+
+- Server-side loader/data evidence validates the normal/trans tree, all 13 Transclass IDs/scripts/trees, Base 99 / Job 70, Valkyrie presence, Renewal loader exclusion and disabled jobmaster. Actual NPC interactions, rebirth, relog and Third/Fourth attempts remain `NOT RUN`/`DEPENDE DO CLIENT`.
+- Third/Fourth classes remain in the core. A group-99 administrator can use `@jobchange` to bypass normal progression; access must remain restricted, logged and temporary.
+- Safe local account tooling is tested only against a MariaDB tmpfs fixture. No persistent player or GM account was created in Gate 4C1.
+- `20211103` selects the RagexeRE branch, but no exact executable/assets were supplied. Executable hash, patches, obfuscation, data/GRF resources and all visual/gameplay compatibility remain `DEPENDE DO CLIENT`.
+- Windows firewall inspection found no specifically named rAthena/6900/6121/5121/MariaDB rules; this is not a complete policy audit. Docker publishes only loopback mappings and publishes no database port.
+
 - Gate 4B proves the local Docker build, Pre-Renewal loaders, server integration, restart, persistence, and effective configuration only on this checkout and host. Native Windows, WSL-only, production, deploy, and cloud operation remain `NOT TESTED`.
 - EXP and drop multipliers are proven in the loaded configuration, not by statistical gameplay sampling. Client execution is required before calling their gameplay effect `TESTED`.
 - Rebirth files and loader path are present, but the complete novice → trans progression is `DEPENDS ON CLIENT`.

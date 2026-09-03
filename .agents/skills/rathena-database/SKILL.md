@@ -5,6 +5,8 @@ description: Review, plan, validate, or execute authorized rAthena YAML database
 
 # rAthena database
 
+Local player-account operations must verify `rathena_gate4a`, use the limited application DB user, validate stdin fields twice, create group 0 only, and isolate tests in the `account-validation-db` tmpfs profile. GM elevation is a separate confirmed reversible action.
+
 Read `AGENTS.md`, `DATABASE.md`, `ID_REGISTRY.md`, `SECURITY.md`, `TESTING.md`, and `CHANGE_CHECKLIST.md`. Determine whether work concerns YAML game databases or MariaDB persistence. Inspect exact headers/imports or SQL schema/upgrades and target version; never infer columns/formats.
 
 Prefer `db/import/` for YAML. For SQL, require explicit mutation authorization, verified non-production target unless stated, backup, least privilege, transaction/rollback plan, and dry/read-only inspection first. Validate references/collisions, parser/startup, schema compatibility, persistence, and regression without exposing credentials.

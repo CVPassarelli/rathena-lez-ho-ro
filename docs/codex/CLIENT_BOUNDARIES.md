@@ -1,5 +1,15 @@
 # Server/client boundaries
 
+## Gate 4C1 client contract
+
+`src/config/packets.hpp` classifies `20211103` as `PACKETVER_RE` (the RE interval is 2020-09-02 through 2021-11-18). The expected executable is therefore an exact **2021-11-03 RagexeRE**, not Main or Zero. The compiled packet database comes from the Login/Char packet code and Map `clif_packetdb.hpp`, `clif_shuffle.hpp` and `packets_struct.hpp` selected under that macro. Packet obfuscation is enabled; executable shuffle/keys must match. A filename alone is not sufficient evidence.
+
+The user must provide a legitimately obtained executable plus its matching data/GRF set. Before Gate 4C2 record its SHA-256, PE/version identity, filename, patch state and obfuscation configuration. Required resources include matching System/data tables, job and skill names, sprites/palettes, icons/descriptions, maps/map index, Lua/Lub files and GRFs. None are supplied or proven by this checkout.
+
+The client must be configured by its authorized patching toolchain to read the intended `clientinfo.xml`, permit the local private-server connection and use `127.0.0.1:6900`. The exact XML schema/fields depend on the supplied client and must be inspected rather than invented. Server-side Char/Map advertise `127.0.0.1`; their ports are 6121 and 5121. Known warning: `mesitemicon` is disabled because it requires `PACKETVER 20230302` or newer. Do not change the packet date to silence it.
+
+Exact login, character select, map entry, UI, Transclass resources and mismatch behavior remain `NOT RUN`/`DEPENDE DO CLIENT`. Another officially supported packet date would require a later, separately approved rebuild and exact-client analysis; no alternative is selected in Gate 4C1.
+
 Classify every feature before implementation:
 
 | Class | Examples / completion condition |

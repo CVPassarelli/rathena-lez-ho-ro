@@ -1,8 +1,13 @@
 [CmdletBinding()]
 param(
-    [ValidateSet("setup", "start", "stop", "restart", "status", "logs", "run-once", "active-runtime", "upstream-full", "optional-audit", "official", "smoke", "backup-inter-server", "repair-inter-server", "rotate-inter-server")]
+    [ValidateSet("setup", "start", "stop", "restart", "status", "logs", "run-once", "active-runtime", "upstream-full", "optional-audit", "official", "smoke", "backup-inter-server", "repair-inter-server", "rotate-inter-server", "create-account", "set-account-group")]
     [string]$Action = "status",
-    [string]$SecretDirectory
+    [string]$SecretDirectory,
+    [string]$Username,
+    [Security.SecureString]$Password,
+    [ValidateSet("M", "F")][string]$Sex,
+    [ValidateSet(0, 99)][int]$GroupId = 0,
+    [switch]$ConfirmLocalAdmin
 )
 
 $ErrorActionPreference = "Stop"
@@ -115,6 +120,44 @@ function Backup-InterServerAccount {
     Write-Output "RESTORE_NOT_RUN: review the dump, then use an explicitly authorized transaction against rathena_gate4a.login"
 }
 
+function ConvertTo-Utf8Hex([string]$Value) {
+    return [Convert]::ToHexString([Text.Encoding]::UTF8.GetBytes($Value))
+}
+
+function Assert-LocalAccountTarget {
+    $dbContainer = (& docker compose -f $compose ps -q db).Trim()
+    if (-not $dbContainer) { throw "Gate 4A database container is missing" }
+    $database = (& docker inspect --format '{{range .Config.Env}}{{println .}}{{end}}' $dbContainer | Select-String '^MARIADB_DATABASE=').ToString().Split('=', 2)[1]
+    if ($database -ne 'rathena_gate4a') { throw "Refusing account operation: database is not rathena_gate4a" }
+    return $dbContainer
+}
+
+function Invoke-CreateLocalAccount {
+    if ($Username -notmatch '^[A-Za-z0-9_]{6,23}$') { throw "Username must be 6-23 ASCII letters, digits, or underscore" }
+    if (-not $Sex) { throw "Sex must be M or F" }
+    $credential = if ($Password) { $Password } else { Read-Host 'Local test account password' -AsSecureString }
+    $bstr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($credential)
+    try { $clearText = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($bstr) } finally { [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr) }
+    try {
+        $length = [Text.Encoding]::UTF8.GetByteCount($clearText)
+        if ($length -lt 6 -or $length -gt 23) { throw "Password must be 6-23 UTF-8 bytes" }
+        $payload = @((ConvertTo-Utf8Hex $Username), (ConvertTo-Utf8Hex $clearText), $Sex) -join "`n"
+    } finally { $clearText = $null; $credential = $null }
+    $dbContainer = Assert-LocalAccountTarget
+    $payload | & docker exec -i $dbContainer sh /source/tools/local-runtime/account-management.sh create
+    if ($LASTEXITCODE -ne 0) { throw "Local account creation failed" }
+}
+
+function Invoke-SetLocalAccountGroup {
+    if (-not $ConfirmLocalAdmin) { throw "Set -ConfirmLocalAdmin for the reversible local group change" }
+    if ($Username -notmatch '^[A-Za-z0-9_]{6,23}$') { throw "Username must be 6-23 ASCII letters, digits, or underscore" }
+    $payload = @((ConvertTo-Utf8Hex $Username), $GroupId) -join "`n"
+    $dbContainer = Assert-LocalAccountTarget
+    $payload | & docker exec -i $dbContainer sh /source/tools/local-runtime/account-management.sh set-group
+    if ($LASTEXITCODE -ne 0) { throw "Local account group change failed" }
+    Write-Output "ACCOUNT_GROUP_UPDATED username=$Username group=$GroupId"
+}
+
 if ($Action -eq "setup") {
     Initialize-LocalRuntimeSecrets -SecretDirectory $secretDir
 } elseif ($Action -in @("repair-inter-server", "rotate-inter-server")) {
@@ -208,4 +251,6 @@ switch ($Action) {
         Write-Output "INTER_SERVER_SECRET_ROTATED=True"
         Invoke-Provisioning
     }
+    "create-account" { Invoke-CreateLocalAccount }
+    "set-account-group" { Invoke-SetLocalAccountGroup }
 }
